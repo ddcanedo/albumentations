@@ -238,8 +238,8 @@ def convert_bbox_to_albumentations(bbox, source_format, rows, cols, check_validi
         # https://github.com/pjreddie/darknet/blob/f6d861736038da22c9eb0739dca84003c5a5e275/scripts/voc_label.py#L12
         bbox, tail = bbox[:4], tuple(bbox[4:])
         _bbox = np.array(bbox[:4])
-        if check_validity and np.any((_bbox <= 0) | (_bbox > 1)):
-            raise ValueError("In YOLO format all coordinates must be float and in range (0, 1]")
+        #if check_validity and np.any((_bbox <= 0) | (_bbox > 1)):
+        #    raise ValueError("In YOLO format all coordinates must be float and in range (0, 1]")
 
         x, y, w, h = bbox
 
@@ -331,17 +331,17 @@ def convert_bboxes_from_albumentations(bboxes, target_format, rows, cols, check_
 
 def check_bbox(bbox):
     """Check if bbox boundaries are in range 0, 1 and minimums are lesser then maximums"""
-    for name, value in zip(["x_min", "y_min", "x_max", "y_max"], bbox[:4]):
-        if not 0 <= value <= 1 and not np.isclose(value, 0) and not np.isclose(value, 1):
-            raise ValueError(
-                "Expected {name} for bbox {bbox} "
-                "to be in the range [0.0, 1.0], got {value}.".format(bbox=bbox, name=name, value=value)
-            )
-    x_min, y_min, x_max, y_max = bbox[:4]
-    if x_max <= x_min:
-        raise ValueError("x_max is less than or equal to x_min for bbox {bbox}.".format(bbox=bbox))
-    if y_max <= y_min:
-        raise ValueError("y_max is less than or equal to y_min for bbox {bbox}.".format(bbox=bbox))
+    #for name, value in zip(["x_min", "y_min", "x_max", "y_max"], bbox[:4]):
+    #    if not 0 <= value <= 1 and not np.isclose(value, 0) and not np.isclose(value, 1):
+    #        raise ValueError(
+    #            "Expected {name} for bbox {bbox} "
+    #            "to be in the range [0.0, 1.0], got {value}.".format(bbox=bbox, name=name, value=value)
+    #        )
+    #x_min, y_min, x_max, y_max = bbox[:4]
+    #if x_max <= x_min:
+    #    raise ValueError("x_max is less than or equal to x_min for bbox {bbox}.".format(bbox=bbox))
+    #if y_max <= y_min:
+    #    raise ValueError("y_max is less than or equal to y_min for bbox {bbox}.".format(bbox=bbox))
 
 
 def check_bboxes(bboxes):
@@ -378,7 +378,7 @@ def filter_bboxes(bboxes, rows, cols, min_area=0.0, min_visibility=0.0):
         if calculate_bbox_area(bbox, rows, cols) <= min_area:
             continue
         resulting_boxes.append(bbox + tail)
-    return resulting_boxes
+    return bboxes
 
 
 def union_of_bboxes(height, width, bboxes, erosion_rate=0.0):
